@@ -1,0 +1,49 @@
+# Overwriting
+##########################################
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+
+# Default aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+#Ask before removing or overwriting files
+alias mv="mv -i"
+alias cp="cp -i"
+alias rm="rm -i"
+alias py="python3"
+
+# Nicer formating
+alias mount="mount | column -t"
+
+# Add an "alert" alias for long running commands.  Use like so:
+# sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# Custom commands
+###########################################
+alias a_sort='ls -trlh $1'
+alias a_service_names="lsof -n -P -i +c 13"
+alias a_lsblk_fat="lsblk -o NAME,KNAME,MODEL,TYPE,FSTYPE,UUID,SIZE"
+alias a_gogo='source ~/.bashrc'
+
+
+# Runnign programs
+############################################
+alias p_napp="py Documents/python/Napy/nap.py"
+alias p_AndroidStudio="/home/$USER/Documents/android-studio/bin/studio.sh"
+alias p_Bluegriffon="/home/$USER/Documents/bluegriffon/bluegriffon-bin"
+alias p_Fritzing="/home/$USER/Documents/fritzing-0.9.3b.linux.AMD64/Fritzing"
+alias p_Appinventor="/usr/google/appinventor/commands-for-Appinventor/aiStarter"

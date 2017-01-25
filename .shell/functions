@@ -1,0 +1,116 @@
+function man_on_word {
+  # This function lets you non-nondestructively view command man page.
+  # usage: press Ctrl-h
+	TMP_LN=$READLINE_LINE
+	TMP_POS=$READLINE_POINT
+	while [ $TMP_POS -gt 0 ] &&
+  	[ "${TMP_LN:TMP_POS:1}" != " " ]
+  	do true $((--TMP_POS))
+	done
+	if [ 0 -ne $TMP_POS ]; then true $((++TMP_POS));fi
+	TMP_WORD="${READLINE_LINE:$TMP_POS}"
+	TMP_WORD="${TMP_WORD%% *}"
+	man "$TMP_WORD"
+}
+bind -x '"\C-h":man_on_word'
+
+
+f_clock_on_top () {
+   while sleep 1;do tput sc;tput cup 0 $(($(tput cols)-29));date;tput rc;done &
+ }
+
+
+f_extract () {
+    [[ -n "${1}" && -r "${1}" ]] && file ${1} && 7z x ${1}
+}
+
+
+f_timer() {
+  # Simple timer
+if [ "$#" -ne 1 ] || [ "$1" == "-h"  ]; then
+  echo "usage: $FUNCNAME minutes_to_countdown"
+  return 1
+ fi
+ min=$(($1 * 60))
+ echo "Timer started... and will end after $min s"
+ sleep $min && notify-send "Timer" "$1 min. ended."
+ echo "Timer ended after $1 min."
+}
+
+f_webmconvert(){
+if [ "$#" -lt 2 ] || [ "$1" == "-h"  ]; then
+  echo "usageL $FUNCNAME source.mp4 result.webm"
+  return 1
+else
+  avconv -i "$1" -acodec libvorbis -aq 5 -ac 2 -qmax 25 -threads 2 "$2"
+fi
+}
+
+f_teip(){
+  # Open file with defaul application
+ xdg-open "$1" &
+}
+
+
+f_findprogramname() {
+  # Find program name
+  tempfile=$(mktemp)
+  xprop > $tempfile
+  egrep  "FILE|WM_NAME" $tempfile
+  echo ""
+  ps -p $(grep "_NET_WM_PID(CARDINAL)" $tempfile | awk -F"= " '{print $2}')
+  rm  -f $tempfile
+}
+
+f_findprogramname_compare() {
+  # Find program name, by comparing firerence
+ read -p "Turn on unknown program and press 'Enter' "
+ ps x -o cmd > /tmp/capture1.txt
+ read -t 15 -p "Turn off unknown program and press 'Enter'"
+ ps x -o cmd > /tmp/capture2.txt
+ diff /tmp/capture1.txt /tmp/capture2.txt
+}
+
+
+f_cenas_pic() {
+  # Downloadina nuotraukas is 370chan
+	curl -s "$1" | grep -Eo "\/b/src/[[:digit:]]*.(png|jpg)" | sed 's/^/http:\/\/370chan.lt/' | sort | uniq | xargs wget -nv
+}
+
+
+
+ toggle="on"
+f_espeak_togle() {
+   #Stops/Continues espeak
+   pid=$(pgrep espeak) || return $?
+ 	if [ "$toggle" == "off" ]; then
+    echo ${GREEN}"Continuing espeak (pid:$pid)"${NC}
+ 		kill -CONT $pid
+    toggle="on"
+ 	elif [ "$toggle" == "on" ]; then
+    echo ${RED}"Stoping espeak (pid:$pid)..."${NC}
+    kill -STOP $pid
+    toggle="off"
+
+ 	fi
+ }
+
+f() {
+   #finds files in current directory
+   #eq= find -name "$1"
+     find -iname "*$1*"
+ }
+
+cdd() {
+   # cd+ls
+ cd "$@" && ls;
+ }
+
+up()
+ #up  [number]
+ {
+     for i in `seq 1 $1`;
+     do
+         cd ../
+     done;
+ }
