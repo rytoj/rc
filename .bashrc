@@ -82,3 +82,6 @@ if [ -d ~/.shell/ ] ; then
 fi
 
 export PATH="$HOME/Documents/bash/:$PATH"
+export PATH=/home/sup/Documents/bash/:/home/sup/bin:/home/sup/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/anton/pygit/common_utilities
+
+export PATH=$PATH:/home/sup/pygit/common_utilities/
